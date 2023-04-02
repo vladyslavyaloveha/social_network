@@ -1,0 +1,10 @@
+---
+version: "3.9"
+
+services:
+  backend:
+    environment:
+      DEBUG: 0
+      DJANGO_COLLECTSTATIC: 1
+      DJANGO_MIGRATE: 1
+      DJANGO_SETTINGS_MODULE: social_network.settings.prod

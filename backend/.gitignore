@@ -1,0 +1,16 @@
+# Byte-compiled & optimized & DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff
+social_network/static/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Database scripts
+scripts/db/*.sh
+scripts/db/*.sql
+scripts/db/*.sql.gz
