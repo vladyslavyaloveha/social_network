@@ -86,6 +86,7 @@ services:
     ports:
       - "5437:5432/tcp"
     volumes:
+      - ./backend/scripts/databases/grafana:/docker-entrypoint-initdb.d
       - grafana_db:/var/lib/postgresql/data
 
 

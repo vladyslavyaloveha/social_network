@@ -31,7 +31,7 @@ services:
     ports:
       - "5432:5432/tcp"
     volumes:
-      #- ./backend/scripts/db:/docker-entrypoint-initdb.d
+      - ./backend/scripts/databases/db:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
 
 volumes:

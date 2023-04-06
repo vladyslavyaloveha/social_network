@@ -8,8 +8,5 @@ class LastActiveMiddleware:
     def __call__(self, request):
         user = request.user
         if user.is_authenticated:
-            activity = UserActivity.objects.create(
-                url=request.build_absolute_uri(), user=user
-            )
-            activity.save()
+            UserActivity.objects.create(url=request.build_absolute_uri(), user=user)
         return self.get_response(request)

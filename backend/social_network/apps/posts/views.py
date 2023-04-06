@@ -39,7 +39,6 @@ from social_network.apps.posts.serializers import (PostLikeSerializer,
                 "user",
                 OpenApiTypes.INT,
                 OpenApiParameter.QUERY,
-                required=True,
                 description="A pk identifying a user.",
             ),
         ],
@@ -96,6 +95,7 @@ from social_network.apps.posts.serializers import (PostLikeSerializer,
 )
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
+    filterset_fields = ["user"]
     permission_classes = (
         IsAuthenticated,
         IsPostOwnerOrReadOnly,

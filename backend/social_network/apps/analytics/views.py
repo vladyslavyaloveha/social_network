@@ -34,7 +34,7 @@ from social_network.apps.posts.models import Like
                 required=True,
                 description="End date",
                 examples=[
-                    OpenApiExample("start_date", value="2023-05-01"),
+                    OpenApiExample("end_date", value="2023-05-01"),
                 ],
             ),
         ],
