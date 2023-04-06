@@ -1,12 +1,10 @@
-from rest_framework.serializers import ModelSerializer, CurrentUserDefault, HiddenField
-
+from rest_framework.serializers import (CurrentUserDefault, HiddenField,
+                                        ModelSerializer)
 from social_network.apps.posts.models import Like, Post
 
 
 class PostSerializer(ModelSerializer):
-    user = HiddenField(
-    default=CurrentUserDefault()
-)
+    user = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = Post
@@ -22,8 +20,6 @@ class PostSerializer(ModelSerializer):
             "created_at",
             "updated_at",
         )
-
-
 
 
 class PostLikeSerializer(ModelSerializer):

@@ -8,12 +8,21 @@ x-common-environment: &common-environment
   DB_HOST: ${DB_HOST?}
   DB_NAME: ${DB_NAME?}
   DB_PASSWORD: ${DB_PASSWORD?}
-  DB_PORT: ${DB_PORT-5432}
+  DB_PORT: ${DB_PORT?}
   DB_USER: ${DB_USER?}
   SECRET_KEY: ${SECRET_KEY?}
   SUPERUSER_EMAIL: ${SUPERUSER_EMAIL?}
   SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD?}
   SUPERUSER_USERNAME: ${SUPERUSER_USERNAME?}
+  GRAFANA_DB_HOST: ${GRAFANA_DB_HOST?}
+  GRAFANA_DB_NAME: ${GRAFANA_DB_NAME?}
+  GRAFANA_DB_PASSWORD: ${GRAFANA_DB_PASSWORD?}
+  GRAFANA_DB_PORT: ${GRAFANA_DB_PORT?}
+  GRAFANA_DB_USER: ${GRAFANA_DB_USER?}
+  GRAFANA_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER?}
+  GRAFANA_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD?}
+
+
 
 services:
   traefik:
@@ -46,5 +55,41 @@ services:
       traefik.http.routers.backend.middlewares: backend_compress
       traefik.http.services.backend.loadbalancer.server.port: 80
 
+  grafana:
+    <<: *common
+    image: grafana/grafana-oss:latest
+    environment:
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: ${GRAFANA_DB_HOST?}
+      GF_DATABASE_PORT: ${GRAFANA_DB_PORT?}
+      GF_DATABASE_NAME: ${GRAFANA_DB_NAME?}
+      GF_DATABASE_USER: ${GRAFANA_DB_USER?}
+      GF_DATABASE_PASSWORD: ${GRAFANA_DB_PASSWORD?}
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER?}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD?}
+      GF_DATABASE_SSL_MODE: disable
+    depends_on:
+        - grafana-db
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+
+  grafana-db:
+    <<: *common
+    container_name: grafana-db
+    image: "postgres:${POSTGRES_VERSION-14.2-alpine}"
+    environment:
+      POSTGRES_DB: ${GRAFANA_DB_NAME?}
+      POSTGRES_USER: ${GRAFANA_DB_USER?}
+      POSTGRES_PASSWORD: ${GRAFANA_DB_PASSWORD?}
+    ports:
+      - "5437:5432/tcp"
+    volumes:
+      - grafana_db:/var/lib/postgresql/data
+
+
 volumes:
   logs: {}
+  grafana: {}
+  grafana_db: {}
